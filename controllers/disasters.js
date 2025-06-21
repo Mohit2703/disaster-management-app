@@ -1,6 +1,7 @@
 import supabase from '../config/supabase.js';
 import { io } from '../app.js';
 import { getLocationfromDescription } from '../utils/location.js';
+import { gettLatLong } from '../utils/getGeocoding.js';
 
 export const getDisasters = async (req, res) => {
     try {
@@ -58,21 +59,18 @@ export const createDisaster = async (req, res) => {
     }
 
     const location_from_description = await getLocationfromDescription(description);
-    console.log('Extracted Location:', location_from_description);
-    // Geocode location to get coordinates
-    // const coordinates = await geocodingService.geocode(location);
-    // if (!coordinates) {
-    //   return res.status(400).json({ success: false, error: 'Invalid location' });
-    // }
-    const coordinates = [ 37.7749, -122.4194];
     
+    console.log('Extracted Location:', location_from_description);
+    
+    const { latitude, longitude } = await gettLatLong(location);
+
     const { data, error } = await supabase
         .from('disasters')
         .insert({
           title,
           description,
           location_name: location,
-          location: `POINT(${85.1376} ${25.5941})`,
+          location: `POINT(${longitude} ${latitude})`,
           tags: tags || [],
           owner_id: ownerId
         })

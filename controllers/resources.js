@@ -1,15 +1,31 @@
 import supabase from '../config/supabase.js';
 import { io } from '../app.js';
+import { gettLatLong } from '../utils/getGeocoding.js';
 
 export const createResource = async (req, res) => {
     try {
         const { id } = req.params;
-        const { type, description, link } = req.body;
+        let { type, description, link, location, lat, lon } = req.body;
         const userId = req.user.id;
         
         if (!type || !description || !link) {
             return res.status(400).json({ success: false, error: 'Resource type, description and link are required' });
         }
+
+        // Validate disaster exists
+        if (!lat || !lon) {
+            if (!location) {
+                return res.status(400).json({ success: false, error: 'lat, lon or location is required' });
+            }
+            // If location is provided, we can use geocoding to get lat and lon
+            const { latitude, longitude } = await gettLatLong(location);
+            if (!latitude || !longitude) {
+                return res.status(400).json({ success: false, error: 'Invalid location' });
+            }
+            lat = latitude;
+            lon = longitude;
+        }
+
         const { data, error } = await supabase
             .from('resources')
             .insert({
@@ -17,6 +33,8 @@ export const createResource = async (req, res) => {
                 user_id: userId,
                 type,
                 description,
+                location_name: location,
+                location: `POINT(${lon} ${lat})`,
                 link
             })
             .select()
@@ -28,7 +46,7 @@ export const createResource = async (req, res) => {
         }
         
         // Emit resource event to disaster room
-        const io = req.app.get('io');
+
         io.to(`disaster_${id}`).emit('new_resource', data);
         res.json({
             success: true,
@@ -45,10 +63,22 @@ export const createResource = async (req, res) => {
 
 export const getResourcesByDisasterId = async (req, res) => {
     const { id } = req.params;
-    const { lat, lon } = req.query;
+    let { lat, lon, location } = req.query;
 
     if (!lat || !lon) {
-    return res.status(400).json({ error: 'lat and lon are required' });
+        if (!location) {
+            return res.status(400).json({ error: 'lat, lon or location is required' });
+        }
+        // If location is provided, we can use geocoding to get lat and lon
+        const locationDetail = await gettLatLong(location);
+        const latitude = locationDetail.lat;
+        const longitude = locationDetail.lon;
+        console.log('Geocoded location:', latitude, longitude);
+        if (!latitude || !longitude) {
+            return res.status(400).json({ error: 'Invalid location' });
+        }
+        lat = latitude;
+        lon = longitude;
     }
 
     const radiusInMeters = 10000; // 10 km

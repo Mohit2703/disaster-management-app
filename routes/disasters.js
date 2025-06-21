@@ -1,9 +1,5 @@
 import express from 'express';
 export const router = express.Router();
-// import supabase from '../config/supabase.js';
-// import getLocationfromDescription from '../utils/location_extract.js';
-// import verifyImageWithGemini from '../utils/verify_image_gemini.js';
-// import { io } from '../app.js';
 import { mockAuth } from '../middleware/mockAuth.js';
 import { getDisasters, createDisaster, getDisasterById, deleteDisaster, updateDisaster } from '../controllers/disasters.js';
 import { createReport } from '../controllers/reports.js';

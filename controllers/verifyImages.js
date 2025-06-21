@@ -9,7 +9,7 @@ export const verifyImageStatus = async (req, res) => {
     
       try {
         // Call the verification function (assuming it's defined in utils/verify_image_gemini.js)
-        const prompt = `Verify the authenticity of the image at the following URL: ${imageUrl}. Provide a detailed analysis of its content, context, and any potential signs of manipulation or authenticity.`;
+        const prompt = `Verify the authenticity of the image at the following URL: ${imageUrl}. Provide a detailed analysis of its content, context, and any potential signs of manipulation or authenticity in less than four words.`;
         const temperature = 0.5; // Adjust temperature for response variability
 
         const verificationResult = await geminiData(prompt, temperature);
