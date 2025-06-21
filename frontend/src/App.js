@@ -12,7 +12,7 @@ const DisasterResponseUI = () => {
   const [message, setMessage] = useState('');
 
   // API Base URL - adjust this to your backend URL
-  const API_BASE = 'http://localhost:5000/api';
+  const API_BASE = 'https://disaster-management-app-elsg.onrender.com/api';
 
   // Mock user for authentication
   const currentUser = 'netrunnerX';
