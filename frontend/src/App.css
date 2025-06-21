@@ -1,0 +1,126 @@
+/* GLOBAL STYLES */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+/* CONTAINER */
+.App {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* SECTION CARDS */
+.section,
+form {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.section:hover,
+form:hover {
+  transform: scale(1.01);
+}
+
+/* HEADINGS */
+h1, h2 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+/* FORMS */
+input[type="text"],
+input[type="url"],
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* LIVE DATA SECTION */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+li {
+  background: #fff;
+  padding: 1rem;
+  border-left: 4px solid #ccc;
+  margin-bottom: 0.75rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  transition: transform 0.3s ease;
+}
+
+li:hover {
+  transform: translateX(5px);
+}
+
+.priority {
+  color: red;
+  font-weight: bold;
+}
+
+/* FLEX/GRID LAYOUT */
+@media (min-width: 768px) {
+  .App {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .App > * {
+    min-width: 0;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+/* LOADING SPINNER */
+.loader {
+  border: 4px solid #eee;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
